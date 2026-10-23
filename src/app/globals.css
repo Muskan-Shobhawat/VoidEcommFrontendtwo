@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: rgb(var(--paper-rgb));
+  --surface: rgb(var(--surface-rgb));
+  --ink: rgb(var(--ink-rgb));
+  --mute: rgb(var(--mute-rgb));
+  --clay: rgb(var(--clay-rgb));
+  --line: rgb(var(--ink-rgb) / 0.12);
+
+  /* Re-skin Bootstrap to the editorial palette */
+  --bs-body-bg: var(--paper);
+  --bs-body-color: var(--ink);
+  --bs-body-font-family: var(--font-sans), system-ui, sans-serif;
+  --bs-link-color: var(--ink);
+  --bs-link-hover-color: var(--clay);
+  --bs-border-color: var(--line);
+  --bs-gutter-x: 1.25rem;
+}
+
+/* Theme palettes; MUI sets data-theme on <html> (ThemeRegistry). Light is the default. */
+:root, [data-theme="light"] {
+  color-scheme: light;
+  --paper-rgb: 246 242 234;
+  --surface-rgb: 236 230 219;
+  --ink-rgb: 22 21 20;
+  --mute-rgb: 112 106 98;
+  --clay-rgb: 166 74 38;
+  --bs-link-color-rgb: 22, 21, 20;
+  --stage-bg: #e9e3d8;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper-rgb: 22 21 20;
+  --surface-rgb: 34 32 30;
+  --ink-rgb: 241 236 227;
+  --mute-rgb: 160 152 141;
+  --clay-rgb: 218 128 88;
+  --bs-link-color-rgb: 241, 236, 227;
+  --stage-bg: #0f0e0d;
+}
+
+/* Tailwind preflight is off (Bootstrap's reboot is the reset), so give border utilities a style to draw with. */
+*, ::before, ::after { border-width: 0; border-style: solid; border-color: var(--line); }
+
+html { scroll-behavior: smooth; }
+html, body { background: var(--paper); color: var(--ink); }
+body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+/* :where keeps this at element specificity so text-* utilities still win on hover */
+a:where(:hover) { color: inherit; text-decoration: none; }
+button { font-family: inherit; color: inherit; }
+::selection { background: var(--clay); color: var(--paper); }
+h1, h2, h3, h4 { font-weight: 400; }
+
+/* layout wrapper (Tailwind `container` is disabled; Bootstrap's is for grids) */
+.wrap { width: 100%; max-width: 1480px; margin: 0 auto; padding-left: 1.25rem; padding-right: 1.25rem; }
+@media (min-width: 768px) { .wrap { padding-left: 2.5rem; padding-right: 2.5rem; } }
+
+.font-serif { font-family: var(--font-serif), Georgia, serif; }
+.label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; }
+.hairline { border-color: var(--line); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Underline that draws in from the left on hover */
+.link-draw { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.4s ease; padding-bottom: 2px; }
+.link-draw:hover, .group:hover .link-draw { background-size: 100% 1px; }
+
+/* Bootstrap form controls: underlined fields */
+.form-control, .form-select {
+  background: transparent; color: var(--ink); border: 0; border-bottom: 1px solid rgb(var(--ink-rgb) / 0.25); border-radius: 0; padding: 0.7rem 0;
+}
+.form-select { background-position: right 0 center; padding-right: 1.5rem; }
+[data-theme="dark"] .form-select { --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f1ece3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); }
+.form-select option { background: var(--paper); color: var(--ink); }
+.form-control:focus, .form-select:focus { background: transparent; color: var(--ink); border-color: var(--ink); box-shadow: none; }
+.form-control::placeholder { color: rgb(var(--mute-rgb) / 0.7); }
+.form-label { color: var(--mute); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; margin-bottom: 0; }
+.table { --bs-table-bg: transparent; --bs-table-color: var(--ink); --bs-table-border-color: var(--line); }
+
+/* device preview stage */
+.device-stage { position: fixed; inset: 0; background: var(--stage-bg); display: flex; flex-direction: column; align-items: center; z-index: 50; }
+.device-bezel { border-radius: 44px; background: #111; box-shadow: 0 40px 100px rgba(0,0,0,0.35), inset 0 0 0 2px #2b2b2b, 0 0 0 10px #1a1a1a; overflow: hidden; position: relative; }
+.device-bezel.tablet { border-radius: 28px; }
+.device-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 110px; height: 28px; background: #000; border-radius: 20px; z-index: 2; }
+.device-bezel iframe { display: block; border: 0; background: var(--paper); width: 100%; height: 100%; }
